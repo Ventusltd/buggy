@@ -1,2 +1,3 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# LF everywhere, so the file on disk is the file that ships and receipts hash the same on every machine
+* text=auto eol=lf
+*.png binary

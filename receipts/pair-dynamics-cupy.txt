@@ -1,0 +1,17 @@
+receipt: buggy dynamics pair run
+utc: 2026-09-27T15:33:48Z
+engine: cupy
+python: 3.12.10  numpy: 2.5.3  cupy: 14.2.0
+rows: 4096  presets: site-buggy,utility-4x4,rigid-hgv,mobile-crane  seconds: 6.0  dt: 0.001  steps: 6000
+ground: tilted plane 2 % / -1.5 % with 5 cm bumps
+electron (semi-implicit Euler): 15.85 s wall, finite True, worst friction-circle excess 0.000e+00 N
+positron (RK4): 64.19 s wall, finite True, worst friction-circle excess 0.000e+00 N
+pair gap position: max 0.0391 m, mean 0.00229 m; yaw max 0.2034 deg
+pair gap by preset (max m): site-buggy 0.0391, utility-4x4 0.0100, rigid-hgv 0.0053, mobile-crane 0.0050
+cpu witness (64 rows on numpy): euler 6.772e-15, rk4 6.911e-15 (max relative difference)
+js golden witness (numpy mirror vs JS module, 8 runs): 1.174e-14 (max relative difference)
+sha256 electron final state: c3917e7c27f9a8eff357e383edeb1709b75613a5eda6c15d634893cee8de1f13
+sha256 positron final state: 6028913b9334799cd93016baf4144a8895f320e406bbf6f8ab4a1fe65c51d402
+thresholds: finite; friction excess <= 1e-9 N; pair gap < 0.25 m; witness < 1e-6; golden < 1e-9
+verdict: PASS
+sha256: 308337be2ab9cdff4118d270eeb06f7b999f2b3ba0c758520ff55cfb7b384099

@@ -1,0 +1,22 @@
+{
+  "schema": "buggy.site-tour.v1",
+  "name": "Demonstration loop (test land)",
+  "cruiseKmh": 12,
+  "route": [
+    { "e": 400000, "n": 300000 },
+    { "e": 400000, "n": 300060 },
+    { "e": 400010, "n": 300080 },
+    { "e": 400040, "n": 300090 },
+    { "e": 400100, "n": 300090 },
+    { "e": 400120, "n": 300070 },
+    { "e": 400120, "n": 300010 },
+    { "e": 400100, "n": 299995 },
+    { "e": 400040, "n": 299995 }
+  ],
+  "stops": [
+    { "at": 1, "hold": 6, "caption": "Site entrance: the access track and the turning head." },
+    { "at": 4, "hold": 8, "caption": "Equipment row: typical spacing and the maintenance corridor." },
+    { "at": 6, "hold": 6, "caption": "Cable route crossing: the track rises over the buried route here." },
+    { "at": 8, "hold": 4, "caption": "End of the tour. Take the wheel, or press P to pause." }
+  ]
+}
