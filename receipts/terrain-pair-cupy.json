@@ -1,0 +1,68 @@
+{
+  "cartridge": "buggy-terrain",
+  "check": "pair",
+  "constants_same_as_web": true,
+  "coverage": {
+    "no_ground": 1147,
+    "sphere_hits": 147,
+    "surfaces": {
+      "grass": 13423,
+      "gravel": 1004,
+      "soft": 1221,
+      "tarmac": 1974,
+      "water": 1627,
+      "wet": 751
+    }
+  },
+  "electron_vs_positron": {
+    "height_max_abs_m": 1.4210854715202004e-14,
+    "known_same": true,
+    "nodata_pattern_same": true,
+    "normal_max_abs": 2.0872192862952943e-14,
+    "pass": true,
+    "sinkage_max_rel": 4.3337396265159973e-07,
+    "sphere_depth_max_abs_m": 0.0,
+    "sphere_normal_max_abs": 0.0,
+    "sphere_solid_mismatches": 0,
+    "surface_mismatches": 0
+  },
+  "electron_vs_witness": {
+    "height_max_abs_m": 0.0,
+    "known_same": true,
+    "nodata_pattern_same": true,
+    "normal_max_abs": 0.0,
+    "pass": true,
+    "sinkage_max_rel": 1.5723440296411506e-15,
+    "sphere_depth_max_abs_m": 2.220446049250313e-16,
+    "sphere_normal_max_abs": 2.220446049250313e-16,
+    "sphere_solid_mismatches": 0,
+    "surface_mismatches": 0
+  },
+  "engine": {
+    "compute_capability": "12.0",
+    "cupy": "14.2.0",
+    "device_memory_gib": 15.9,
+    "engine": "cupy",
+    "numpy": "2.5.3",
+    "requested": "cupy"
+  },
+  "loads": 61,
+  "note": "consistency between implementations, not a measurement of any ground; surface and soil values are illustrative",
+  "pass": true,
+  "photons": 20000,
+  "run_utc": "2026-09-27T15:33:49Z",
+  "seed": 20260927,
+  "sha256": {
+    "electron": "2e611904a10287969c048e2e86ed13ea69986296cdb584f6c5446d158d6362f9",
+    "fixture": "ebcfb3fa908412e5a4b54de1fdd3ac28cb1d99fa3f24a8a5577d191f6670f547",
+    "positron": "0fd8ac4a808a34b9d98798ffd6870124343e337bb27523abb03daf24a1ded731",
+    "witness": "ec6d924c5167a63ad27427a7472a332b34a672226785e2ffd61a42bef2e4e634"
+  },
+  "spheres": 2000,
+  "tolerances": {
+    "height_m": 1e-09,
+    "normal": 1e-09,
+    "sinkage_rel": 1e-05,
+    "sphere_depth_m": 1e-09
+  }
+}

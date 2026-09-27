@@ -1,0 +1,62 @@
+[
+  {
+    "app": "buggy-engine",
+    "type": "engine",
+    "area": "visualisation",
+    "version": "20260927.01",
+    "purpose": "One entry point (src/web/buggy.mjs) that lets a world drive a vehicle over LiDAR or generated ground: the dynamics cartridge adapted to the feel layer's fixed-step contract, the terrain cartridge and the access checks, dependency-free and deterministic, 0 CPU when parked.",
+    "execution": {
+      "gpu_engine": "none",
+      "cpu_engine": "javascript",
+      "ci_cd_compatible": true
+    }
+  },
+  {
+    "app": "buggy-dynamics",
+    "type": "cartridge",
+    "area": "computational",
+    "version": "20260927.01",
+    "purpose": "Four-contact rigid-body vehicle dynamics (spring-damper suspension, slip-curve tyres, drive, brake, Ackermann steering) for driving LiDAR and generated ground; a JS reference module for the world and a CuPy/NumPy batch mirror for pair runs (semi-implicit Euler against RK4).",
+    "execution": {
+      "gpu_engine": "cupy",
+      "cpu_engine": "numpy",
+      "ci_cd_compatible": true
+    }
+  },
+  {
+    "app": "buggy-terrain",
+    "type": "cartridge",
+    "area": "computational",
+    "version": "20260927.01",
+    "purpose": "Ground under each wheel: terrain heights and normals across tile edges, surface class from open data layers with friction and rolling resistance, illustrative soft-ground sinkage, water crossings flagged, and collision with solids. The world passes its own heightAt, so heights are sampled one way only.",
+    "execution": {
+      "gpu_engine": "cupy",
+      "cpu_engine": "numpy",
+      "ci_cd_compatible": true
+    }
+  },
+  {
+    "app": "buggy-feel",
+    "type": "plug",
+    "area": "visualisation",
+    "version": "20260927.01",
+    "purpose": "Driver feel: keyboard, gamepad and touch input shaped on the fixed step, chase and driver cameras, speed, gradient and heading readout, mount and dismount, recorded drives with sha256, guided site tours; 0 frames when parked.",
+    "execution": {
+      "gpu_engine": "none",
+      "cpu_engine": "javascript",
+      "ci_cd_compatible": true
+    }
+  },
+  {
+    "app": "buggy-access-checks",
+    "type": "plug",
+    "area": "reconciliation",
+    "version": "20260927.01",
+    "purpose": "Checks a driven trace or a designed road for delivery vehicles: gradient, cross-slope, bend radius, swept path, gates, deck grounding, structures and soft ground; answers whether an abnormal load reaches its destination; gives a fixed-step drive-through for a sales view.",
+    "execution": {
+      "gpu_engine": "none",
+      "cpu_engine": "javascript",
+      "ci_cd_compatible": true
+    }
+  }
+]

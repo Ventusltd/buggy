@@ -1,0 +1,81 @@
+name: ci
+# GitHub-hosted runners for every push and pull request: 7 CPU jobs (cap 12, so Pages deploys elsewhere are not starved).
+# The GPU pair job runs only when dispatched by hand with gpu=true, on a self-hosted runner labelled gpu.
+on:
+  push:
+    branches: [main, 'buggy/**']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      gpu:
+        description: "also run the pair checks on CuPy (self-hosted runner labelled gpu)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    strategy:
+      matrix:
+        node: [22, 24]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ matrix.node }}' }
+      - name: web tests (dynamics, terrain, feel, access checks, assembled engine)
+        run: node --test tests/web/*.test.mjs
+      - name: golden file and presets are current
+        run: node tools/golden-dynamics.mjs && git diff --exit-code -- tests/data src/cartridges/dynamics/presets.json
+
+  python:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.11', '3.12']
+    runs-on: ${{ matrix.os }}
+    env:
+      BUGGY_ENGINE: numpy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: '${{ matrix.python }}' }
+      - run: python -m pip install numpy pytest
+      - run: python -m pytest -q tests/python
+      - name: pair check, dynamics (Euler and RK4, CPU witness, JS golden witness)
+        run: python tools/pair_dynamics.py --rows 64 --seconds 3 --witness-rows 8 --out ci-receipts/pair-dynamics-numpy.txt
+      - name: pair check, terrain (two formulations, Node witness)
+        run: python tools/pair_terrain.py --photons 20000 --out ci-receipts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: receipts-${{ matrix.os }}-py${{ matrix.python }}
+          path: ci-receipts/
+
+  schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python tools/validate_catalogue.py
+
+  gpu:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.gpu }}
+    runs-on: [self-hosted, gpu]
+    env:
+      BUGGY_ENGINE: cupy
+    steps:
+      - uses: actions/checkout@v4
+      - name: pair check, dynamics on CuPy
+        run: python tools/pair_dynamics.py --rows 4096 --seconds 6 --out ci-receipts/pair-dynamics-cupy.txt
+      - name: pair check, terrain on CuPy
+        run: python tools/pair_terrain.py --photons 20000 --out ci-receipts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: receipts-gpu
+          path: ci-receipts/

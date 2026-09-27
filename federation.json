@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "globalgrid2050.federation_manifest.v1",
+  "repo": "Ventusltd/buggy",
+  "role": "app",
+  "owner": "Ventusltd",
+  "purpose": "Buggy engine for the federation: drive a vehicle over LiDAR and generated worlds for engineering checks and sales walk-throughs. Web ES modules the world imports as a cartridge, with CuPy/NumPy mirrors for pair checks.",
+  "status": "staging",
+  "dataProducts": [
+    {
+      "name": "buggy_catalogue",
+      "format": "json",
+      "grain": "one entry per cartridge, plug or engine",
+      "key": "app",
+      "path": "catalogue.json"
+    },
+    {
+      "name": "buggy_pair_receipts",
+      "format": "text/json (LF, sha256)",
+      "grain": "one receipt per pair run per engine",
+      "key": "cartridge + engine + utc",
+      "path": "receipts/"
+    }
+  ],
+  "dependencies": [
+    {
+      "repo": "Ventusltd/primordial-brain",
+      "type": "schema_dependency",
+      "purpose": "Cartridge and plug catalogue schema; dual CuPy/NumPy engine rule; CI matrix pattern.",
+      "cardinality": "many-to-one"
+    },
+    {
+      "repo": "Ventusltd/binoculars",
+      "type": "vocabulary_dependency",
+      "purpose": "Lens and mount vocabulary for the chase and driver cameras.",
+      "cardinality": "many-to-one"
+    },
+    {
+      "repo": "Ventusltd/graphics-engines-open-source",
+      "type": "consumer",
+      "purpose": "The world imports src/web/buggy.mjs as its vehicle cartridge.",
+      "cardinality": "one-to-many"
+    }
+  ],
+  "workflows": [
+    {
+      "file": ".github/workflows/ci.yml",
+      "purpose": "JS and Python tests, pair checks on NumPy with receipts as artifacts, catalogue and federation validation; an opt-in self-hosted GPU pair job.",
+      "dispatchable": true
+    }
+  ]
+}
